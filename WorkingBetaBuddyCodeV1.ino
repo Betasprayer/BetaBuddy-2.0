@@ -71,11 +71,12 @@ void setup() {
   display.setCursor(0,0);
   display.setCursor(0,0);
   display.display(); // actually display all of the above
+    
+  attachInterrupt(digitalPinToInterrupt(12), count, RISING); // interrupt used to count rising edges
 }
 
 void loop() {
   display.clearDisplay();
-  attachInterrupt(digitalPinToInterrupt(12), count, RISING); // interrupt used to count rising edges
   Serial.println((float)counter/2048);
   display.print("Rotations: ");
   display.println((float)counter/2048);
