@@ -36,7 +36,11 @@ Adafruit_SSD1306 display = Adafruit_SSD1306(128, 32, &Wire);
 #define outputA 12
 #define outputB 13
 
-volatile long counter = 0; 
+volatile long counter = 0;
+const float encoderRadius = 25.4; // Radius of encoder in mm ***Double check  this value***
+const float mmToFeet = 0.0032808; // 0.00328084 feet per mm 
+float distanceFeet;
+
 void setup() {
   Serial.begin(9600);
 
@@ -75,6 +79,8 @@ void loop() {
   Serial.println((float)counter/2048);
   display.print("Rotations: ");
   display.println((float)counter/2048);
+  display.print("feet: ");
+  display.println(rotationsToFeet((float)counter/2048)); //Print feet here
   display.display();
   display.setCursor(0, 0);
 }
@@ -82,4 +88,8 @@ void loop() {
 void count(){ // interrupt service routine
   if(digitalRead(12) == digitalRead(13)) counter++;
   else counter--;
+}
+
+float rotationsToFeet(float rotations) {
+  return rotations * 2 * 3.1415 * (encoderRadius) * mmToFeet;
 }
